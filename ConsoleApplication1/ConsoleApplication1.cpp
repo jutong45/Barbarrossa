@@ -6,21 +6,18 @@
 using namespace std;
 
 
-// 对象数组初始化
+// 新标准下，枚举类型可以用“类型::值”的方式访问了
 
 class A {
-	int n;
+
 public:
-//	A() {};
-	A (int n,int m) :n(n){};	// ctor
+	static enum E { e1 };	// static 类型是什么鬼？
 };
 
 
 int main(){
-	A *pa = new A[]{A(1,2), A(1,3), A(3,3)};	// 堆数组初始化，与栈数组的语法有区别
-
-	delete ((A*)0);	// 可以删除空指针，效果等于空语句
-	cout << "!";
+	cout << A::E::e1;	// 没错，枚举值可以用“类型::值”的方式访问了，可以避免重名混乱
+	cout << A::e1;	// 老方式
     return 0;
 }
 
