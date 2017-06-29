@@ -6,18 +6,24 @@
 using namespace std;
 
 
-// 新标准下，枚举类型可以用“类型::值”的方式访问了
+// 类对象用传统写法（C）初始化
 
 class A {
 
+public:	// 如果含有 private 数据成员则不能
+	int n;
+private:
+	int j;
 public:
-	static enum E { e1 };	// static 类型是什么鬼？
+	int m;
+	A(int n, int m) :n(n), m(m) {};	// 决定了后面初始化的写法是合法的
+
 };
 
-
+A aa[] = { {1,2},{3,4} };	// 其实是 ctor 的参数列表
 int main(){
-	cout << A::E::e1;	// 没错，枚举值可以用“类型::值”的方式访问了，可以避免重名混乱
-	cout << A::e1;	// 老方式
+	
+	cout << aa[1].m;
     return 0;
 }
 
