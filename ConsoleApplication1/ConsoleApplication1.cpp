@@ -6,24 +6,39 @@
 using namespace std;
 
 
-// 类对象用传统写法（C）初始化
+// delete[]到底是什么，为什么说它是表达式？
 
-class A {
 
-public:	// 如果含有 private 数据成员则不能
-	int n;
-private:
-	int j;
+struct B {
 public:
-	int m;
-	A(int n, int m) :n(n), m(m) {};	// 决定了后面初始化的写法是合法的
-
+	virtual ~B() { 
+		cout << "B's dtor\n"; 
+	}
+	void operator delete[](void* p, std::size_t n) {
+		cout << "B's operator delete[]\n";
+		::operator delete[](p); 
+	}
 };
+struct D : B {
+public:
+	~D() { 
+		cout << "D's dtor\n"; 
+	}
+	void operator delete[](void* p, std::size_t n) {
+		cout << "D's operator delete[]\n";
+		::operator delete[](p); 
+	}
+};
+int main() {
+	/*
+	D* dp = new D[3];
+	delete[] dp; // uses D::operator delete[](void*, std::size_t)
+	B* bp = new D[3];
+	delete[] bp; // undefined behavior
+	*/
 
-A aa[] = { {1,2},{3,4} };	// 其实是 ctor 的参数列表
-int main(){
-	
-	cout << aa[1].m;
-    return 0;
+	B* pb = new B[3];
+	delete[] pb;	// 这可不是 operator delete[]，确实是表达式
+
+	cout << "!\n";
 }
-
