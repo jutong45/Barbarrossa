@@ -6,39 +6,28 @@
 using namespace std;
 
 
-// delete[]到底是什么，为什么说它是表达式？
+// operator++()
 
-
-struct B {
+class Point {
 public:
-	virtual ~B() { 
-		cout << "B's dtor\n"; 
-	}
-	void operator delete[](void* p, std::size_t n) {
-		cout << "B's operator delete[]\n";
-		::operator delete[](p); 
+	int x;
+	int y;
+	Point& operator ++() {
+		this->x++;
+		this->y++;
+
+		cout <<"x:" <<this->x <<"\t y:" << this -> y <<"\n";
+		return (*this);
 	}
 };
-struct D : B {
-public:
-	~D() { 
-		cout << "D's dtor\n"; 
-	}
-	void operator delete[](void* p, std::size_t n) {
-		cout << "D's operator delete[]\n";
-		::operator delete[](p); 
-	}
-};
+void Show(Point &p) {
+	cout << "x:" << p.x << "\t y:" << p.y <<"\n";
+}
 int main() {
-	/*
-	D* dp = new D[3];
-	delete[] dp; // uses D::operator delete[](void*, std::size_t)
-	B* bp = new D[3];
-	delete[] bp; // undefined behavior
-	*/
+	int n = 5;
+	cout << ++n++ << "\n";	// 错误语句，因为 n++ 的值不是左值，不能作为 ++n 的操作数
 
-	B* pb = new B[3];
-	delete[] pb;	// 这可不是 operator delete[]，确实是表达式
-
-	cout << "!\n";
+	Point pixel = {3,9};
+	Show(pixel);
+	Show(++pixel);
 }
