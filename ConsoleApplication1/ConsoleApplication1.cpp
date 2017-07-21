@@ -4,13 +4,26 @@
 #include "stdafx.h"
 
 using namespace std;
+using std::string;
 
-// 一维数组转型为二维
-int a[10] = { 0,1,2,3,4,5,6 };	// 一维数组
+template <int N=8>
+class B {
+	// static int n=N;
+public:
+	B() {
+		cout << "B's ctor\n";
+	}
+};
 
-void fn(int a[][5]) {		// 形参是二维数组（实际退化为指向一维数组的指针）
-	cout << a[0][1];
-}
+template <template <int>class T,int N=10>
+class D :public T<N> {
+public:
+	D():T<N>() {
+		cout << "the ctor of D \n";
+	};
+};
+// template void A<int>::fn<int>(int,int);	// 显式实例化
+
 int main() {
-	fn((int (*)[5])a);	// 将一维数组转型为二维传递给函数
+	D<B> *pD = new D<B>;
 }
