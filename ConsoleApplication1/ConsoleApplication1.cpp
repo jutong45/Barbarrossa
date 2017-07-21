@@ -49,6 +49,10 @@ template <typename SKY= LuanshuBaozhuang<AllDefaultParam, 1>,
 		  typename EARTH= LuanshuBaozhuang<AllDefaultParam, 33>, 
 		  typename HUMAN= LuanshuBaozhuang<AllDefaultParam, 555>>
 class UserClass :public Param<SKY,EARTH,HUMAN> {	// 用户类
+public:
+	static void fn() {
+		cout << typeid(EARTH).name();	// 通过 SKY、EARTH、HUMAN 来引用模板参数。成员名字比模板参数名字的优先级高，覆盖了后者
+	}
 };
 
 template <typename Sky = LuanshuBaozhuang<AllDefaultParam, 1>,
@@ -56,12 +60,12 @@ template <typename Sky = LuanshuBaozhuang<AllDefaultParam, 1>,
 	typename Human = LuanshuBaozhuang<AllDefaultParam, 555>>
 class UserClass2 {	// 用户类
 public:
-	typedef  Param<Sky, Earth, Human> Arg;
+	typedef  Param<Sky, Earth, Human> Arg;	// 通过 Arg::SKY、Arg::EARTH、Arg::HUMAN 来引用模板参数
 };
 
 
 int main() {
-	cout << typeid(UserClass<Earth_is<char *>>::EARTH).name();	// 写法简单，但采用继承方式会导致内存开销
+	UserClass<Earth_is<char *>>::fn();	// 写法简单，但采用继承方式会导致内存开销
 
-	cout << typeid(UserClass2<Earth_is<char *>>::Arg::EARTH).name();	// 写法虽繁琐，但类内无垃圾开销
+	cout << typeid(UserClass2<Earth_is<char *>>::Arg::EARTH).name();	// 写法虽稍繁琐，但类内无垃圾开销
 }
