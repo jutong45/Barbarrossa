@@ -7,19 +7,24 @@
 
 using namespace std;
 using std::string;
-template <int N>
-class accu {
-public:
-	enum {result= accu<N-1>::result*N};
-};
 
+int n = 9;
 
-template<>
-class accu<1> {
+auto pn = &n;
+
+template <typename T>
+class C {
 public:
-	enum {result=1};
+
+	T fn(int n) { 
+		auto a = T(n);
+		return a; 
+	}
+	
 };
 
 int main() {
-	cout << ACCU(6);
+	C<int> c;
+	
+	cout << c.fn(9);
 }
