@@ -7,24 +7,19 @@
 
 using namespace std;
 using std::string;
-
-int n = 9;
-
-auto pn = &n;
-
 template <typename T>
-class C {
+class A{
 public:
-
-	T fn(int n) { 
-		auto a = T(n);
-		return a; 
-	}
-	
+	A<T> & operator=(A<T> &);
 };
 
+template <typename T>
+A<T>& A<T> :: operator=(A &) {	// 第三个A<T>的参数表（可以）被省略，因为类域名字后面被视为类域内部
+	cout << "operator=()";
+	return * this;
+}
 int main() {
-	C<int> c;
-	
-	cout << c.fn(9);
+	A<int> a1;
+	A<int> a2;
+	a2= a1;
 }
